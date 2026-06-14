@@ -1,0 +1,66 @@
+﻿# ISE Project Files
+*.ise
+*.gise
+*.xise
+
+# Temporary Build & Log Files
+_xmsgs/
+xst/
+iseconfig/
+_ngo/
+*.ngo
+*.ptwx
+*.bgn
+*.bit
+*.drc
+*.lso
+*.ncd
+*.pad
+*.par
+*.pcf
+*.pt
+*.unroutes
+*.xpi
+*.twx
+*.twr
+*.bld
+*.cmd_log
+*.log
+*.nav
+*.ngc
+*.ngd
+*.xrpt
+*.xml
+*.stx
+*.syr
+*.xwbt
+
+# Simulation Files
+isim/
+fuse.log
+fuse.xmsgs
+fuse.wdb
+xsim.dir/
+*.wdb
+*.exe
+
+# ChipScope Files
+*.cdc
+*.cdc_gen
+*.cdc_log
+
+# Coregen & IP Files
+*.ngo
+coregen.cgp
+coregen.cgc
+coregen_log/
+
+# PlanAhead Files
+planAhead_*.dir/
+pa.fromNetlist.tcl
+pa.fromHdl.tcl
+pa.fromXst.tcl
+
+# Autosave & Backup Files
+*.bak
+*.sav
