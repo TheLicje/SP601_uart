@@ -1,0 +1,15 @@
+NET "clk" LOC = "V10"; ## 5 on X2 USER OSC Socket
+NET "rst" LOC = "D14"; ## 1 on SW8 DIP Sw
+
+NET "tx_pin" LOC = "L12"; ## 24 on U4
+NET "USB_1_TX" LOC = "K14"; ## 25 on U4
+
+NET "led[0]" LOC = "E13"; ## 2 on DS11 LED
+NET "led[1]" LOC = "C14"; ## 2 on DS12 LED
+NET "led[2]" LOC = "C4";  ## 2 on DS13 LED
+NET "led[3]" LOC = "A4";  ## 2 on DS14 LED
+
+NET "button[0]" LOC = "P4"; ## 2 on SW6 pushbutton
+NET "button[1]" LOC = "F6"; ## 2 on SW4 pushbutton
+NET "button[2]" LOC = "E4"; ## 2 on SW5 pushbutton
+NET "button[3]" LOC = "F5"; ## 2 on SW7 pushbutton
