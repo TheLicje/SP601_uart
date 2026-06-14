@@ -43,6 +43,10 @@ fuse.wdb
 xsim.dir/
 *.wdb
 *.exe
+*.prj
+*.cmd
+xilinxsim.ini
+*.xst
 
 # ChipScope Files
 *.cdc
