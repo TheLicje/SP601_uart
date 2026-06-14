@@ -5,13 +5,13 @@
 // 
 // Create Date:    05:46:19 06/14/2026 
 // Design Name: 
-// Module Name:    baud_tick 
+// Module Name:    baud_rate 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
 // Description: 
 //
-// Dependencies: Baud tick 115200 for 27MHz USER_CLOCK
+// Dependencies: Baud Rate 115200 for 27MHz USER_CLOCK
 //
 // Revision: 
 // Revision 0.01 - File Created
@@ -21,7 +21,7 @@
 module baud_rate(
 	input logic clk,
 	input logic rst,
-	output logic baud_tick
+	output logic baud_rate
     );
 
 logic [7:0] counter;
@@ -32,10 +32,10 @@ always_ff @(posedge clk or posedge rst) begin
 	end else begin
 		if (counter == 234) begin
 			counter <= 8'b0;
-			baud_tick <= 1'b1;
+			baud_rate <= 1'b1;
 		end else begin
 			counter <= counter + 1'd1;
-			baud_tick <= 1'b0;
+			baud_rate <= 1'b0;
 		end
 	end
 end			 
