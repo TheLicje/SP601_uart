@@ -8,6 +8,7 @@ _xmsgs/
 xst/
 iseconfig/
 _ngo/
+xlnx_auto_0_xdb/
 *.ngo
 *.ptwx
 *.bgn
@@ -34,6 +35,15 @@ _ngo/
 *.stx
 *.syr
 *.xwbt
+*.ngr
+*.ut
+*.mrp
+*.ngm
+*_map.map
+*_pad.csv
+*_pad.txt
+par_usage_statistics.html
+*_summary.html
 
 # Simulation Files
 isim/
