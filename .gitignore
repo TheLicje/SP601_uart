@@ -43,7 +43,7 @@ xlnx_auto_0_xdb/
 *_pad.csv
 *_pad.txt
 par_usage_statistics.html
-*_summary.html
+*.html
 
 # Simulation Files
 isim/
