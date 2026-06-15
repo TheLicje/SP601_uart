@@ -28,11 +28,15 @@ module top (
 	input wire rst;
 	input wire [3:0] btn;
 	output wire tx_pin;
+	localparam CLK_FREQ = 27000000;
 	wire baud_tick;
 	wire tx_ready;
 	wire btn_start;
 	wire [7:0] btn_data;
-	baud_rate u_baud_rate(
+	baud_rate #(
+		.CLK_FREQ(CLK_FREQ),
+		.BAUD_RATE(9600)
+	) u_baud_rate(
 		.clk(clk),
 		.rst(rst),
 		.baud_tick(baud_tick)
@@ -55,3 +59,4 @@ module top (
 		.tx_ready(tx_ready)
 	);
 endmodule
+

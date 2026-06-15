@@ -9,33 +9,50 @@
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
-// Description: 
+// Description:
 //
-// Dependencies: Baud Rate 115200 for 27MHz USER_CLOCK
+// Dependencies:
 //
 // Revision: 
 // Revision 0.01 - File Created
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module baud_rate(
+module baud_rate #(
+	parameter CLK_FREQ  = 27_000_000,
+	parameter BAUD_RATE = 9600
+	)(
 	input logic clk,
 	input logic rst,
-	output logic baud_rate
+	output logic baud_tick
     );
 
-logic [7:0] counter;
+function integer clog2;
+	input integer value;
+	begin 
+		value = value - 1;
+		for (clog2 = 0; value > 0; clog2 = clog2 + 1) begin
+			value = value >> 1;
+		end
+	end
+endfunction
+
+localparam MAX_COUNT = CLK_FREQ / BAUD_RATE;
+localparam CNT_WIDTH = clog2(MAX_COUNT);
+
+logic [CNT_WIDTH-1:0] counter;
 
 always_ff @(posedge clk or posedge rst) begin
 	if (rst) begin
-		counter <= 8'b0;
+		counter <= 0;
+		baud_tick <= 1'b0;
 	end else begin
-		if (counter == 234) begin
-			counter <= 8'b0;
-			baud_rate <= 1'b1;
+		if (counter == (MAX_COUNT - 1)) begin
+			counter <= 0;
+			baud_tick <= 1'b1;
 		end else begin
-			counter <= counter + 1'd1;
-			baud_rate <= 1'b0;
+			counter <= counter + 1;
+			baud_tick <= 1'b0;
 		end
 	end
 end			 

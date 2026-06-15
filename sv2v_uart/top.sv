@@ -26,12 +26,17 @@ module top(
 	output logic tx_pin
     );
 
+localparam CLK_FREQ = 27_000_000;
+
 logic baud_tick;
 logic tx_ready;
 logic btn_start;
 logic [7:0] btn_data;
 
-baud_rate u_baud_rate (
+baud_rate #(
+	.CLK_FREQ(CLK_FREQ),
+	.BAUD_RATE(9600)	
+) u_baud_rate (
 	.clk(clk),
 	.rst(rst),
 
