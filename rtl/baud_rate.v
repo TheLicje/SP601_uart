@@ -21,13 +21,13 @@
 module baud_rate (
 	clk,
 	rst,
-	baud_tick
+	tx_tick
 );
 	parameter CLK_FREQ = 27000000;
 	parameter BAUD_RATE = 9600;
 	input wire clk;
 	input wire rst;
-	output reg baud_tick;
+	output reg tx_tick;
 	function integer clog2;
 		input integer value;
 		begin
@@ -36,21 +36,20 @@ module baud_rate (
 				value = value >> 1;
 		end
 	endfunction
-	localparam MAX_COUNT = CLK_FREQ / BAUD_RATE;
-	localparam CNT_WIDTH = clog2(MAX_COUNT);
-	reg [CNT_WIDTH - 1:0] counter;
+	localparam TX_MAX_COUNT = CLK_FREQ / BAUD_RATE;
+	localparam TX_CNT_WIDTH = clog2(TX_MAX_COUNT);
+	reg [TX_CNT_WIDTH - 1:0] tx_cnt;
 	always @(posedge clk or posedge rst)
 		if (rst) begin
-			counter <= 0;
-			baud_tick <= 1'b0;
+			tx_cnt <= 0;
+			tx_tick <= 1'b0;
 		end
-		else if (counter == (MAX_COUNT - 1)) begin
-			counter <= 0;
-			baud_tick <= 1'b1;
+		else if (tx_cnt == (TX_MAX_COUNT - 1)) begin
+			tx_cnt <= 0;
+			tx_tick <= 1'b1;
 		end
 		else begin
-			counter <= counter + 1;
-			baud_tick <= 1'b0;
+			tx_cnt <= tx_cnt + 1;
+			tx_tick <= 1'b0;
 		end
 endmodule
-

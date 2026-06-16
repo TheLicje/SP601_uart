@@ -29,13 +29,13 @@ module tb_baud_rate;
 	reg rst;
 
 	// Outputs
-	wire baud_tick;
+	wire tx_tick;
 
 	// Instantiate the Unit Under Test (UUT)
 	baud_rate uut (
 		.clk(clk), 
 		.rst(rst), 
-		.baud_tick(baud_tick)
+		.tx_tick(tx_tick),
 	);
 
 	always #18.5 clk = ~clk;

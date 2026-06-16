@@ -24,8 +24,8 @@ module baud_rate #(
 	)(
 	input logic clk,
 	input logic rst,
-	output logic baud_tick
-    );
+	output logic tx_tick,
+	    );
 
 function integer clog2;
 	input integer value;
@@ -37,25 +37,25 @@ function integer clog2;
 	end
 endfunction
 
-localparam MAX_COUNT = CLK_FREQ / BAUD_RATE;
-localparam CNT_WIDTH = clog2(MAX_COUNT);
+localparam TX_MAX_COUNT = CLK_FREQ / BAUD_RATE;
+localparam TX_CNT_WIDTH = clog2(TX_MAX_COUNT);
 
-logic [CNT_WIDTH-1:0] counter;
+logic [TX_CNT_WIDTH-1:0] tx_cnt;
 
 always_ff @(posedge clk or posedge rst) begin
 	if (rst) begin
-		counter <= 0;
-		baud_tick <= 1'b0;
+		tx_cnt  <= 0;
+		tx_tick <= 1'b0;
 	end else begin
-		if (counter == (MAX_COUNT - 1)) begin
-			counter <= 0;
-			baud_tick <= 1'b1;
+		if (tx_cnt == (TX_MAX_COUNT - 1)) begin
+			tx_cnt <= 0;
+			tx_tick <= 1'b1;
 		end else begin
-			counter <= counter + 1;
-			baud_tick <= 1'b0;
+			tx_cnt <= tx_cnt + 1;
+			tx_tick <= 1'b0;
 		end
 	end
-end			 
+end	
 
 endmodule
 
