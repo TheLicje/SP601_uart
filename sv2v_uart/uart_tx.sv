@@ -29,8 +29,9 @@ module uart_tx(
 	output logic tx_ready
     );
 
-typedef enum logic [1:0] {
+typedef enum logic [2:0] {
     IDLE,
+	SYNC,
     START_BIT,
     DATA_BITS,
     STOP_BIT
@@ -65,8 +66,17 @@ always_comb begin
 		IDLE: begin
 			tx_ready = 1'b1;
 			if (tx_start) begin
-				state_nxt = START_BIT;
+				state_nxt = SYNC;
 				shift_reg_nxt = tx_data;
+			end
+		end
+
+		SYNC: begin
+			tx_ready = 1'b0;
+			tx_pin = 1'b1;
+
+			if (baud_tick) begin
+				state_nxt = START_BIT;
 			end
 		end
 
