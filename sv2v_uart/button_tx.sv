@@ -31,6 +31,7 @@ module button_tx(
 typedef enum logic [1:0] {
 	IDLE,
 	SEND,
+	ACK,
 	WAIT
 } state_t; 
 
@@ -91,11 +92,17 @@ always_comb begin
 				else if (btn_buf[3]) tx_data_nxt = 8'h33;
 			end
 			
-			state_nxt = WAIT;
+			state_nxt = ACK;
+		end
+
+		ACK: begin
+			if (tx_ready == 1'b0) begin
+				state_nxt = WAIT;
+			end 
 		end
 
 		WAIT:begin
-			if (tx_ready == 1'b1) begin
+			if (tx_ready) begin
 				if (cnt == 3) begin
 					cnt_nxt = 2'b0;
 					state_nxt = IDLE;	

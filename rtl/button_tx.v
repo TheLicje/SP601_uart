@@ -95,7 +95,10 @@ module button_tx (
 				state_nxt = 2'd2;
 			end
 			2'd2:
-				if (tx_ready == 1'b1) begin
+				if (tx_ready == 1'b0)
+					state_nxt = 2'd3;
+			2'd3:
+				if (tx_ready) begin
 					if (cnt == 3) begin
 						cnt_nxt = 2'b00;
 						state_nxt = 2'd0;
