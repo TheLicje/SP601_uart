@@ -61,7 +61,7 @@ module top (
 		.clk(clk),
 		.rst(rst),
 		.tx_ready(tx_ready),
-		.button(btn_debounce),
+		.btn(btn_debounce),
 		.tx_start(btn_start),
 		.tx_data(btn_data)
 	);

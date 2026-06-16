@@ -35,14 +35,14 @@ module tb_button_tx;
 	wire [7:0] tx_data;
 	
 	// Varaibles
-	integer i;
+	integer i, j;
 
 	// Instantiate the Unit Under Test (UUT)
 	button_tx uut (
 		.clk(clk), 
 		.rst(rst), 
 		.tx_ready(tx_ready), 
-		.button(button), 
+		.btn(button), 
 		.tx_start(tx_start), 
 		.tx_data(tx_data)
 	);
@@ -53,7 +53,7 @@ module tb_button_tx;
 		// Initialize Inputs
 		clk = 0;
 		rst = 1;
-		tx_ready = 0;
+		tx_ready = 1;
 		button = 4'b0;
 
 		// Wait 100 ns for global reset to finish
@@ -62,14 +62,19 @@ module tb_button_tx;
 		
 		// Add stimulus here
 		for (i = 0; i < 4; i = i + 1) begin
-			tx_ready = 1;
-			@(posedge clk);
 			button[i] = 1;
 			@(posedge clk);
 			@(posedge clk);
 			button[i] = 0;
-			tx_ready = 0;
-			#100;
+			
+			for (j = 0; j < 4; j = j + 1) begin
+				@(posedge tx_start);
+				tx_ready = 0;
+				repeat(10) @(posedge clk);
+				tx_ready = 1;
+			end
+			
+			repeat(50) @(posedge clk);
 		end
 		
 		$stop;
