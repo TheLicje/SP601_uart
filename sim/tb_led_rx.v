@@ -57,6 +57,10 @@ module tb_led_rx;
 				rx_valid = 0;
 				repeat(100)@(posedge clk);
 			end
+			rx_valid = 1;
+			rx_data = 8'h0A; // 'LF'
+			repeat(1)@(posedge clk);
+			rx_valid = 0;
 			rx_data = 0;
 			repeat(200)@(posedge clk);
 		end

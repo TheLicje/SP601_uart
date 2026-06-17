@@ -17,8 +17,8 @@ module button_tx (
 	reg [1:0] state_nxt;
 	reg tx_start_nxt;
 	reg [7:0] tx_data_nxt;
-	reg [1:0] cnt;
-	reg [1:0] cnt_nxt;
+	reg [2:0] cnt;
+	reg [2:0] cnt_nxt;
 	reg [3:0] btn_buf;
 	reg [3:0] btn_buf_nxt;
 	reg [3:0] btn_prev;
@@ -27,7 +27,7 @@ module button_tx (
 			tx_start <= 1'b0;
 			tx_data <= 8'b00000000;
 			state <= 2'd0;
-			cnt <= 2'b00;
+			cnt <= 3'b000;
 			btn_buf <= 4'b0000;
 			btn_prev <= 4'b0000;
 		end
@@ -52,7 +52,7 @@ module button_tx (
 				if ((btn > 0) && (btn_prev == 0)) begin
 					state_nxt = 2'd1;
 					btn_buf_nxt = btn;
-					cnt_nxt = 2'b00;
+					cnt_nxt = 3'b000;
 				end
 			2'd1: begin
 				tx_start_nxt = 1'b1;
@@ -72,6 +72,10 @@ module button_tx (
 					else if (btn_buf[3])
 						tx_data_nxt = 8'h33;
 				end
+				else if (cnt == 4)
+					tx_data_nxt = 8'h0d;
+				else if (cnt == 5)
+					tx_data_nxt = 8'h0a;
 				state_nxt = 2'd2;
 			end
 			2'd2:
@@ -79,8 +83,8 @@ module button_tx (
 					state_nxt = 2'd3;
 			2'd3:
 				if (tx_ready) begin
-					if (cnt == 3) begin
-						cnt_nxt = 2'b00;
+					if (cnt == 3'd5) begin
+						cnt_nxt = 3'b000;
 						state_nxt = 2'd0;
 					end
 					else begin

@@ -67,7 +67,7 @@ module tb_button_tx;
 			@(posedge clk);
 			button[i] = 0;
 			
-			for (j = 0; j < 4; j = j + 1) begin
+			for (j = 0; j < 6; j = j + 1) begin
 				@(posedge tx_start);
 				tx_ready = 0;
 				repeat(10) @(posedge clk);

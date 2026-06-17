@@ -38,7 +38,7 @@ typedef enum logic [1:0] {
 state_t state, state_nxt;
 logic tx_start_nxt;
 logic [7:0] tx_data_nxt;
-logic [1:0] cnt, cnt_nxt;
+logic [2:0] cnt, cnt_nxt;
 logic [3:0] btn_buf, btn_buf_nxt;
 logic [3:0] btn_prev;
 
@@ -47,7 +47,7 @@ always_ff @(posedge clk or posedge rst) begin
 		tx_start <= 1'b0;
 		tx_data  <= 8'b0;
 		state <= IDLE;
-		cnt   <= 2'b0;
+		cnt   <= 3'b0;
 		btn_buf  <= 4'b0;
         btn_prev <= 4'b0;
 	end else begin
@@ -72,26 +72,25 @@ always_comb begin
 			if ((btn > 0) && (btn_prev == 0)) begin
 				state_nxt = SEND;
 				btn_buf_nxt = btn;
-				cnt_nxt = 2'b0;
+				cnt_nxt = 3'b0;
 			end
 		end 
 		
 		SEND: begin
 			tx_start_nxt = 1'b1;
 
-			if (cnt == 0) begin
-				tx_data_nxt = 8'h62;
-			end else if (cnt == 1) begin
-				tx_data_nxt = 8'h74;
-			end else if (cnt == 2) begin
-				tx_data_nxt = 8'h6E;
-			end else if (cnt == 3) begin				
-				if (btn_buf[0])		 tx_data_nxt = 8'h30;
-				else if (btn_buf[1]) tx_data_nxt = 8'h31;
-				else if (btn_buf[2]) tx_data_nxt = 8'h32;
-				else if (btn_buf[3]) tx_data_nxt = 8'h33;
-			end
-			
+			if (cnt == 0)	   tx_data_nxt = 8'h62; // 'b'
+			else if (cnt == 1) tx_data_nxt = 8'h74; // 't'
+			else if (cnt == 2) tx_data_nxt = 8'h6E; // 'n'
+			else if (cnt == 3) begin				
+				if (btn_buf[0])		 tx_data_nxt = 8'h30; // '0'
+				else if (btn_buf[1]) tx_data_nxt = 8'h31; // '1'
+				else if (btn_buf[2]) tx_data_nxt = 8'h32; // '2'
+				else if (btn_buf[3]) tx_data_nxt = 8'h33; // '3'
+			end 
+			else if (cnt == 4) tx_data_nxt = 8'h0D;	// 'CR'
+			else if (cnt == 5) tx_data_nxt = 8'h0A; // 'LF'
+
 			state_nxt = ACK;
 		end
 
@@ -103,8 +102,8 @@ always_comb begin
 
 		WAIT:begin
 			if (tx_ready) begin
-				if (cnt == 3) begin
-					cnt_nxt = 2'b0;
+				if (cnt == 3'd5) begin
+					cnt_nxt = 3'b0;
 					state_nxt = IDLE;	
 				end else begin
 					cnt_nxt = cnt + 1;
