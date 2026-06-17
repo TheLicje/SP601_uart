@@ -2,25 +2,32 @@ module top (
 	clk,
 	rst,
 	btn,
+	rx_pin,
+	led,
 	tx_pin
 );
 	input wire clk;
 	input wire rst;
 	input wire [3:0] btn;
+	input wire rx_pin;
+	output wire [3:0] led;
 	output wire tx_pin;
 	localparam CLK_FREQ = 27000000;
-	wire baud_tick;
+	localparam BAUD_RATE = 9600;
+	wire tx_tick;
 	wire tx_ready;
+	wire rx_valid;
+	wire [7:0] rx_data;
 	wire btn_start;
 	wire [7:0] btn_data;
 	wire [3:0] btn_debounce;
 	baud_rate #(
 		.CLK_FREQ(CLK_FREQ),
-		.BAUD_RATE(9600)
+		.BAUD_RATE(BAUD_RATE)
 	) u_baud_rate(
 		.clk(clk),
 		.rst(rst),
-		.baud_tick(baud_tick)
+		.tx_tick(tx_tick)
 	);
 	genvar _gv_i_1;
 	generate
@@ -41,17 +48,34 @@ module top (
 		.clk(clk),
 		.rst(rst),
 		.tx_ready(tx_ready),
-		.button(btn_debounce),
+		.btn(btn_debounce),
 		.tx_start(btn_start),
 		.tx_data(btn_data)
 	);
 	uart_tx u_uart_tx(
 		.clk(clk),
 		.rst(rst),
-		.baud_tick(baud_tick),
+		.tx_tick(tx_tick),
 		.tx_start(btn_start),
 		.tx_data(btn_data),
 		.tx_pin(tx_pin),
 		.tx_ready(tx_ready)
+	);
+	uart_rx #(
+		.CLK_FREQ(CLK_FREQ),
+		.BAUD_RATE(BAUD_RATE)
+	) u_uart_rx(
+		.clk(clk),
+		.rst(rst),
+		.rx_pin(rx_pin),
+		.rx_valid(rx_valid),
+		.rx_data(rx_data)
+	);
+	led_rx u_led_rx(
+		.clk(clk),
+		.rst(rst),
+		.rx_valid(rx_valid),
+		.rx_data(rx_data),
+		.led(led)
 	);
 endmodule
