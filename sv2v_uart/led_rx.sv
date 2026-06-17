@@ -45,7 +45,7 @@ end
 always_comb begin
 	char_cnt_nxt = char_cnt;
 	led_nxt 	 = led;
-	led_buf_nxt  = led_buf_nxt;
+	led_buf_nxt  = led_buf;
 
 	if (rx_valid) begin
 		case (char_cnt)
@@ -85,9 +85,9 @@ always_comb begin
 
 			4'd4: begin
 				if (rx_data == 8'h0D || rx_data == 8'h0A) begin
-					led_nxt = led_buf;
+					led_nxt = led ^ led_buf;
 				end
-				
+				led_buf_nxt = 4'b0;	
 				char_cnt_nxt = 4'd0;				
 			end
 

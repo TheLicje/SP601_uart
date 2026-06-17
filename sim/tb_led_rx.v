@@ -79,7 +79,11 @@ module tb_led_rx;
         
 		// Add stimulus here
 		send_cmd("led0");
+		send_cmd("led0");
+		send_cmd("led0");
 		send_cmd("led1");
+		send_cmd("led2");
+		send_cmd("led2");
 		send_cmd("led2");
 		send_cmd("led3");
 		send_cmd("lede3");

@@ -32,7 +32,7 @@ module led_rx (
 			;
 		char_cnt_nxt = char_cnt;
 		led_nxt = led;
-		led_buf_nxt = led_buf_nxt;
+		led_buf_nxt = led_buf;
 		if (rx_valid)
 			case (char_cnt)
 				4'd0:
@@ -65,7 +65,8 @@ module led_rx (
 				end
 				4'd4: begin
 					if ((rx_data == 8'h0d) || (rx_data == 8'h0a))
-						led_nxt = led_buf;
+						led_nxt = led ^ led_buf;
+					led_buf_nxt = 4'b0000;
 					char_cnt_nxt = 4'd0;
 				end
 				default: char_cnt_nxt = 4'd0;
