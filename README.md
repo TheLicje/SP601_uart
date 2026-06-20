@@ -22,7 +22,7 @@ The system is logically divided into independent transmitting and receiving modu
 
 ![UART TX ChipScope Waveforms](docs/ChipScope_UART_TX.png)
 
-### Transmitter
+### Receiver
 ![UART RX RTL Schematic](docs/UART_RX.png)
 
 
